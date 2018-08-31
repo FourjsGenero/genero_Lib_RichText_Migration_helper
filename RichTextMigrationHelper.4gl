@@ -586,17 +586,12 @@ END FUNCTION
 # Complex richText document are not HTML valid
 PRIVATE FUNCTION rtm_LoadRichtextToClean(toLoad)
   DEFINE toLoad STRING
-  DEFINE docToRebuild om.DomDocument
-  DEFINE documentElt om.DomNode
 
   TRY
-    LET docToRebuild = om.DomDocument.CreateFromXmlFile(toLoad)
-    LET documentElt = docToRebuild.getDocumentElement()
-
     LET richTextDocGDC = xml.DomDocument.create()
     CALL richTextDocGDC.setFeature("enable-html-compliancy", TRUE)
     CALL richTextDocGDC.setFeature("whitespace-in-element-content", FALSE)
-    CALL richTextDocGDC.loadFromString(documentElt.toString())
+    CALL richTextDocGDC.load(toLoad)
   CATCH
     CALL rtm_DisplayError("Unable to load document")
   END TRY 
